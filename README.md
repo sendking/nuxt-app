@@ -73,3 +73,32 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+---
+
+### 2025年12月18日：集成后端服务与问题排查
+
+为了简化开发，项目集成了 Docker Compose 以统一管理后端依赖服务。
+
+**核心变更：**
+
+*   **Docker 环境**: 添加了 `docker-compose.yml` 文件，用于一键启动 `PostgreSQL` 和 `Redis` 服务。
+*   **配置管理**:
+    *   创建了 `.env` 文件，用于存放服务连接凭证 (例如 `DATABASE_URL` 和 `REDIS_URL`)。
+    *   更新了 `nuxt.config.ts`，通过 `runtimeConfig` 将这些凭证安全地暴露给服务端。
+*   **依赖安装**: 添加了 `pg` (用于 PostgreSQL) 和 `ioredis` (用于 Redis) 库。
+*   **服务连接**:
+    *   在 `server/utils/` 目录下创建了 `db.ts` 和 `redis.ts`，用于管理和复用数据库及 Redis 的连接实例。
+*   **健康检查**: 新增了 `/api/health-check` 接口，用于快速验证 `PostgreSQL` 和 `Redis` 的连接状态。
+
+**如何启动后端服务:**
+
+```bash
+docker-compose up -d
+```
+
+**问题排查：**
+
+*   **问题**: 在启动应用后，`/api/health-check` 接口报告 `role "devuser" does not exist` 错误，即使在 Docker 容器内部通过 `psql` 测试用户和数据库都存在。
+*   **根源**: 通过 `netstat -anv | grep LISTEN | grep 5432` 命令发现，主机的 `5432` 端口被一个非 Docker 的 PostgreSQL 进程占用。这导致 Nuxt 应用连接到了本地错误的数据库实例，而不是 Docker 容器中的数据库。
+*   **解决方案**: 停止本地占位的 PostgreSQL 服务 (例如 `brew services stop postgresql`)，释放端口，然后重新启动 `docker-compose` 服务。

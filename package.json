@@ -10,7 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@types/pg": "^8.16.0",
+    "ioredis": "^5.8.2",
     "nuxt": "^4.2.2",
+    "pg": "^8.16.3",
     "vue": "^3.5.25",
     "vue-router": "^4.6.4"
   }
