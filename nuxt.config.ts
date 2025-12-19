@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   // Enable the pages directory feature
   pages: true,
 
+  // Add UnoCSS module
+  modules: [
+    '@unocss/nuxt',
+  ],
+
   // Define aliases using Nuxt's built-in syntax
   alias: {
     '@changelogs': '~~/changelogs',

@@ -17,5 +17,10 @@
     "pg": "^8.16.3",
     "vue": "^3.5.25",
     "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@unocss/nuxt": "^66.5.10",
+    "@unocss/preset-typography": "^66.5.10",
+    "unocss": "^66.5.10"
   }
 }
