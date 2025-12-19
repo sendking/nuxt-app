@@ -21,7 +21,7 @@ const markdownContent = ref(null);
 const pending = ref(true);
 
 // Using a relative path from this file to the target directory
-const modules = import.meta.glob('../../../changelogs/*.md', { as: 'raw' });
+const modules = import.meta.glob('../../../changelogs/*.md', { query: '?raw', import: 'default' });
 
 const renderedMarkdown = computed(() => {
   if (markdownContent.value) {
