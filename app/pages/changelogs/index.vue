@@ -19,7 +19,7 @@ import { ref } from 'vue';
 const changelogs = ref([]);
 
 // Using a relative path from this file to the target directory
-const modules = import.meta.glob('../../../changelogs/*.md');
+const modules = import.meta.glob('../../../changelogs/*.md', { query: '?raw', import: 'default' });
 
 console.log('Glob modules found:', modules); // Debugging line
 
