@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="prose">
     <h1>Changelog Index</h1>
     <p>Here are the available changelogs:</p>
     <ul>
