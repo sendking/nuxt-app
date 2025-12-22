@@ -13,6 +13,13 @@
           <li>
             <NuxtLink to="/changelogs" class="block text-gray-300 hover:text-white py-2">Changelogs</NuxtLink>
           </li>
+          
+          <!-- Admin Section Separator -->
+          <li class="my-4 border-t border-gray-700"></li>
+          
+          <li>
+            <NuxtLink to="/admin/changelogs" class="block text-gray-300 hover:text-white py-2">Admin: Changelogs</NuxtLink>
+          </li>
         </ul>
       </nav>
     </aside>

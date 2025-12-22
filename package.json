@@ -21,6 +21,7 @@
   "devDependencies": {
     "@unocss/nuxt": "^66.5.10",
     "@unocss/preset-typography": "^66.5.10",
+    "tsx": "^4.21.0",
     "unocss": "^66.5.10"
   }
 }

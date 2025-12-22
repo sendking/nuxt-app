@@ -1,54 +1,32 @@
 <template>
   <div>
     <div v-if="pending">Loading...</div>
-    <div v-else-if="!markdownContent" class="error">
+    <div v-else-if="error" class="error">
       <h2>Changelog Not Found</h2>
       <p>Could not find a changelog with the slug: <strong>{{ slug }}</strong></p>
       <NuxtLink to="/changelogs">Back to changelog index</NuxtLink>
     </div>
-    <div v-else v-html="renderedMarkdown" class="prose"></div>
+    <div v-else-if="changelog" v-html="renderedMarkdown" class="prose"></div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watchEffect } from 'vue';
-import { marked } from 'marked';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { marked } from 'marked';
 
 const route = useRoute();
-const slug = ref(route.params.slug);
-const markdownContent = ref(null);
-const pending = ref(true);
+const slug = route.params.slug as string;
 
-// Using a relative path from this file to the target directory
-const modules = import.meta.glob('../../../changelogs/*.md', { query: '?raw', import: 'default' });
-
-const renderedMarkdown = computed(() => {
-  if (markdownContent.value) {
-    return marked(markdownContent.value);
-  }
-  return '';
+const { data: changelog, pending, error } = await useFetch(`/api/changelogs/${slug}`, {
+  transform: (response) => response.data,
 });
 
-watchEffect(async () => {
-  // Note: The key in `modules` will now be the relative path
-  const targetPath = `../../../changelogs/${slug.value}.md`;
-
-  // --- DEBUGGING LINES ---
-  console.log('--- Debugging [slug].vue ---');
-  console.log('Target Path:', targetPath);
-  console.log('Available Modules:', Object.keys(modules));
-  // --- END DEBUGGING ---
-
-  pending.value = true;
-  // Reset content when slug changes
-  markdownContent.value = null;
-
-  if (modules[targetPath]) {
-    markdownContent.value = await modules[targetPath]();
+const renderedMarkdown = computed(() => {
+  if (changelog.value?.content) {
+    return marked(changelog.value.content);
   }
-
-  pending.value = false;
+  return '';
 });
 </script>
 
@@ -87,5 +65,5 @@ watchEffect(async () => {
 
 .error {
   color: #cc0000;
-}</style>
-
+}
+</style>
