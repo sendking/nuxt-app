@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "db:seed": "tsx server/scripts/seed.ts"
+    "db:seed": "tsx server/scripts/seed.ts --env=.env",
+    "db:seed:prod": "tsx server/scripts/seed.ts --env=.env.vercel"
   },
   "dependencies": {
     "@types/pg": "^8.16.0",
