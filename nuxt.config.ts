@@ -6,10 +6,16 @@ export default defineNuxtConfig({
   // Enable the pages directory feature
   pages: true,
 
-  // Add UnoCSS module
+  // Add UnoCSS and nuxt-gtag modules
   modules: [
     '@unocss/nuxt',
+    'nuxt-gtag',
   ],
+
+  // Gtag configuration
+  gtag: {
+    id: 'G-KC9H4444HT',
+  },
 
   // Define aliases using Nuxt's built-in syntax
   alias: {
@@ -21,6 +27,8 @@ export default defineNuxtConfig({
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
     // Keys within public, will be also exposed to the client-side
-    public: {},
+    public: {
+      gtagId: process.env.NUXT_PUBLIC_GTAG_ID,
+    },
   },
 });
