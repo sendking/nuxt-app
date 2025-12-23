@@ -1,29 +1,20 @@
-import { config } from 'dotenv';
+import 'dotenv/config';
 import { Pool } from 'pg';
 import fs from 'fs/promises';
 import path from 'path';
-
-// --- Environment Configuration ---
-// Allows specifying a custom .env file path, e.g., --env .env.vercel
-const envArg = process.argv.find(arg => arg.startsWith('--env='));
-const envPath = envArg ? envArg.split('=')[1] : '.env';
-config({ path: path.resolve(process.cwd(), envPath) });
-console.log(`Loading environment variables from: ${envPath}`);
-// --- End Environment Configuration ---
-
 
 // --- Database Configuration ---
 const changelogsDir = path.resolve(process.cwd(), 'changelogs');
 const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
-  console.error('Error: DATABASE_URL environment variable is not set.');
+  console.error('Error: DATABASE_URL environment variable is not set. Make sure it is in your .env file or provided by your environment.');
   process.exit(1);
 }
 
 async function seed() {
   // For cloud databases like Vercel Postgres, SSL is required.
-  const isProduction = /vercel\.app/.test(databaseUrl);
+  const isProduction = /vercel\.app|supabase\.co/.test(databaseUrl);
 
   // Extract and print the hostname for clarity
   try {
